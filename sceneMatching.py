@@ -35,7 +35,7 @@ class SceneMatching:
 		resultImg = cv2.drawMatches(image, keypoints, self.templateImage, self.templateKeyPoints, matches[:50], self.templateImage, flags=2)
 		return resultImg
 
-	def matchWithFlann(self, image):
+	def matchWithFlann(self, image, croppedFrame):
 		img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 		keypoints, descriptors = self.matchingAlgorithm.detectAndCompute(img,None)
 
@@ -52,7 +52,7 @@ class SceneMatching:
 				good.append(m)
 
 		img2 = self.templateImage
-		imageCenter = np.float32([0,0]).reshape(-1,1,2)
+		imageCenter = np.float32([-1000,-1000]).reshape(-1,1,2)
 
 		if len(good)>minMatchCount:
 			src_pts = np.float32([ keypoints[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
@@ -61,7 +61,7 @@ class SceneMatching:
 			M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
 			matchesMask = mask.ravel().tolist()
 
-			h,w,x = image.shape
+			h,w,x = croppedFrame.shape
 			imageCenter = np.float32([w/2, h/2]).reshape(-1,1,2)
 			imageCenter = cv2.perspectiveTransform(imageCenter,M)
 

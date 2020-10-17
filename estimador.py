@@ -20,8 +20,8 @@ class Estimador:
 		return frame
 
 	def match(self, frame, currentHeight):
-		frame = self.cropImage(frame, currentHeight)
-		resultImage, point = self.sceneMatching.matchWithFlann(frame)
+		croppedFrame= self.cropImage(frame, currentHeight)
+		resultImage, point = self.sceneMatching.matchWithFlann(frame, croppedFrame)
 		point = self.transformPoint(point)
 		return resultImage, point
 
@@ -33,5 +33,7 @@ class Estimador:
 		cv2.destroyAllWindows()
 
 	def transformPoint(self, point):
+		if point[0][0][0] == -1000 and point[0][0][0] == -1000:
+			return None
 		transformedPoint = cv2.perspectiveTransform(point, self.matrizTransformacao)
 		return transformedPoint
