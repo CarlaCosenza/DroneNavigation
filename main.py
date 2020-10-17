@@ -9,6 +9,7 @@ from constants import isSingleTest
 if __name__ == '__main__':
 
 	estimador = Estimador()
+	currentHeight = 1.28
 
 	if(isSingleTest):
 		estimador.testSingleImage()
@@ -19,7 +20,7 @@ if __name__ == '__main__':
 	while(capturador.frameExists()):
 		startTime = time.time()
 		frame = capturador.getFrame()
-		result, position = estimador.match(frame)
+		result, position = estimador.match(frame, currentHeight)
 
 		cv2.imshow('Matching',result)
 		endTime = time.time()

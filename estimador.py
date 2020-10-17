@@ -13,7 +13,14 @@ class Estimador:
 		H, mask = cv2.findHomography(mapTemplatePoints, mapRealPoints)
 		self.matrizTransformacao = H
 
-	def match(self, frame):
+	def cropImage(self, frame, currentHeight):
+		h,w,x = frame.shape
+		delta = int(200*currentHeight/1.28)
+		frame = frame[delta:h, 0:w-1]
+		return frame
+
+	def match(self, frame, currentHeight):
+		frame = self.cropImage(frame, currentHeight)
 		resultImage, point = self.sceneMatching.matchWithFlann(frame)
 		point = self.transformPoint(point)
 		return resultImage, point

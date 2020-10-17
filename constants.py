@@ -16,5 +16,5 @@ mapTemplatePoints = np.float32([[788,992], [459, 2214], [739, 2967]]).reshape(-1
 mapRealPoints = np.float32([[0,0], [86, -34], [150, 0]]).reshape(-1,1,2)
 
 # SCENE MATCHING CONSTANTS
-sceneMatchingAlgorithm = 'SURF'
+sceneMatchingAlgorithm = 'SIFT'
 minMatchCount = 10
