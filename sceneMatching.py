@@ -52,6 +52,8 @@ class SceneMatching:
 				good.append(m)
 
 		img2 = self.templateImage
+		imageCenter = np.float32([0,0]).reshape(-1,1,2)
+
 		if len(good)>minMatchCount:
 			src_pts = np.float32([ keypoints[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
 			dst_pts = np.float32([ self.templateKeyPoints[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
@@ -66,9 +68,6 @@ class SceneMatching:
 			# Draw path
 			img2 = cv2.circle(img2, (imageCenter[0][0][0], imageCenter[0][0][1]), 10, 255, 3)
 
-			# Draw rectangle
-			# img2 = cv2.polylines(self.templateImage,[np.int32(dst)],True,255,3, cv2.LINE_AA)
-
 		else:
 			# print("Not enough matches are found - %d/%d" % (len(good),minMatchCount) )
 			matchesMask = None
@@ -79,4 +78,4 @@ class SceneMatching:
 			flags = 2)
 
 		img3 = cv2.drawMatches(image,keypoints,img2,self.templateKeyPoints,good,None,**draw_params)
-		return img3
+		return img3, imageCenter

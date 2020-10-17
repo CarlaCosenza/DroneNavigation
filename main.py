@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import time
 
 from capturador import Capturador
@@ -18,10 +19,12 @@ if __name__ == '__main__':
 	while(capturador.frameExists()):
 		startTime = time.time()
 		frame = capturador.getFrame()
-		result = estimador.match(frame)
+		result, position = estimador.match(frame)
+
 		cv2.imshow('Matching',result)
 		endTime = time.time()
 		print('FPS: ', 1/(endTime-startTime))
+		print('Position:', position)
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 
