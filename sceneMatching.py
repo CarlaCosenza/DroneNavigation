@@ -63,10 +63,11 @@ class SceneMatching:
 
 			h,w,x = croppedFrame.shape
 			imageCenter = np.float32([w/2, h/2]).reshape(-1,1,2)
-			imageCenter = cv2.perspectiveTransform(imageCenter,M)
-
-			# Draw path
-			img2 = cv2.circle(img2, (imageCenter[0][0][0], imageCenter[0][0][1]), 10, 255, 3)
+			
+			if not(isinstance(M, type(None))):
+				imageCenter = cv2.perspectiveTransform(imageCenter,M)
+				# Draw path
+				img2 = cv2.circle(img2, (imageCenter[0][0][0], imageCenter[0][0][1]), 10, 255, 3)
 
 		else:
 			# print("Not enough matches are found - %d/%d" % (len(good),minMatchCount) )

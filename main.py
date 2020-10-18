@@ -10,6 +10,8 @@ if __name__ == '__main__':
 
 	estimador = Estimador()
 	currentHeight = 1.28
+	numberOfFrames = 0
+	Found = 0
 
 	if(isSingleTest):
 		estimador.testSingleImage()
@@ -26,9 +28,18 @@ if __name__ == '__main__':
 		endTime = time.time()
 		print('FPS: ', 1/(endTime-startTime))
 		print('Position:', position)
+
+		numberOfFrames += 1
+		if isinstance(position, type(None)):
+			Found += 1
+
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 
 	cv2.destroyAllWindows()
 	capturador.releaseCapture()
+
+	print('total amount of frames:', numberOfFrames)
+	print('times position was found:', Found)
+
 	exit()

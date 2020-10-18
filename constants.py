@@ -7,13 +7,13 @@ isSingleTest = False
 
 # CAPTURADOR CONSTANTS
 inputType = ImageInput.VIDEO
-videoFile = 'imagensTeste/teste2.mp4'
+videoFile = 'imagensTeste/teste4.mp4'
 
 # ESTIMADOR CONSTANTS
-templateImage = 'imagensTeste/teste2Referencial.jpg'
+templateImage = 'imagensTeste/teste4Referencial4.jpg'
 singleImageTest = 'golden.jpeg'
-mapTemplatePoints = np.float32([[788,992], [459, 2214], [739, 2967]]).reshape(-1,1,2)
-mapRealPoints = np.float32([[0,0], [86, -34], [150, 0]]).reshape(-1,1,2)
+mapTemplatePoints = np.float32([[ 777 , 753 ], [ 416 , 2389 ], [ 844 , 2818 ]]).reshape(-1,1,2)
+mapRealPoints = np.float32([[0,0], [112, -30], [150, 0]]).reshape(-1,1,2)
 
 # SCENE MATCHING CONSTANTS
 sceneMatchingAlgorithm = 'SIFT'
