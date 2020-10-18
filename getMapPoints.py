@@ -6,7 +6,7 @@ def click_event(event, x, y, flags, params):
   
     if event == cv2.EVENT_LBUTTONDOWN: 
   
-        print('[',x,',',y,']') 
+        print('[',y,',',x,']') 
   
         font = cv2.FONT_HERSHEY_SIMPLEX 
         cv2.putText(img, str(x) + ',' +

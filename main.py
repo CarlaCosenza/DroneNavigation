@@ -17,6 +17,10 @@ if __name__ == '__main__':
 		estimador.testSingleImage()
 		exit()
 
+	# position = np.float32([345.5698, 499.8454]).reshape(-1,1,2)
+	# position = estimador.transformPoint(position)
+	# print(position)
+
 	capturador = Capturador()
 
 	while(capturador.frameExists()):
@@ -26,7 +30,7 @@ if __name__ == '__main__':
 
 		cv2.imshow('Matching',result)
 		endTime = time.time()
-		print('FPS: ', 1/(endTime-startTime))
+		# print('FPS: ', 1/(endTime-startTime))
 		print('Position:', position)
 
 		numberOfFrames += 1
