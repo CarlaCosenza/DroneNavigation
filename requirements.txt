@@ -1,8 +1,11 @@
 cycler==0.10.0
+djitellopy @ https://github.com/damiafuentes/DJITelloPy/archive/master.zip
 imutils==0.5.3
 kiwisolver==1.2.0
 matplotlib==3.3.0
 numpy==1.18.2
+opencv-contrib-python==4.4.0.44
+opencv-python==4.4.0.44
 Pillow==7.2.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
