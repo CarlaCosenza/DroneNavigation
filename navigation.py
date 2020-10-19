@@ -16,6 +16,8 @@ drone.set_speed(10)
 keepRecording = True
 frame_read = drone.get_frame_read()
 
+position = np.float32([0,0]).reshape(-1,1,2)
+
 def dist2D(a, b):
     print(a)
     print(b)
@@ -89,13 +91,37 @@ def goTo(drone, nextPos, actualPos,actualAng):
 
     return angle
 
-def goToSteps(drone, nextBasis, actualPos, actualAng, steps, position):
+def goToSteps(drone, nextBasis, actualPos, actualAng, steps):
     distance = math.sqrt((nextBasis[0]-actualPos[0])**2+(nextBasis[1]-actualPos[1])**2) # in meters
     for i in range(0,steps):
         print('Position in ' ,i, 'step:', position)
-        drone.move_forward(int(distance*100/steps))
+        if(int((i*distance*100)/steps - position[0][0][0]) > 19):
+            drone.move_forward(int((i*distance*100)/steps - int(position[0][0][0])))
+            sleep(1)
+        elif(int((i*distance*100)/steps - position[0][0][0]) < -19):
+            drone.move_back(-int((i*distance*100)/steps - int(position[0][0][0])))
+            sleep(1)
 
-def mission(drone, steps, position):
+        if(-position[0][0][1] > 19):
+            drone.move_left(int(-position[0][0][1]))
+            sleep(1)
+        elif(-position[0][0][1] < -19):
+            drone.move_right(int(position[0][0][1]))
+            sleep(1)
+
+    drone.move_forward(int(distance*100/steps))
+
+def test(drone):
+    drone.takeoff()
+    drone.move_up(50)
+
+    drone.move_forward(150)
+
+    drone.land()
+
+
+
+def mission(drone, steps):
     end_mission = True
 
     actualAng = 90
@@ -112,7 +138,9 @@ def mission(drone, steps, position):
 
         print('going from {},{} to {},{}'.format(actualPos[0],actualPos[1],nextBasis[0],nextBasis[1]))
         # actualAng = goTo(drone, nextBasis, actualPos, actualAng)
-        goToSteps(drone, nextBasis, actualPos, actualAng, steps, position)
+        print(type(position))
+        print("position in mission", position)
+        goToSteps(drone, nextBasis, actualPos, actualAng, steps)
 
 
         drone.land()
@@ -131,8 +159,9 @@ def mission(drone, steps, position):
         drone.land()
         end_mission = False
 
-def getPosition(capturador, estimador, position, currentHeight, result):
+def getPosition(capturador, estimador, currentHeight, result):
     while(1):
+        global position
         startTime = time.time()
         old_position = position
 
@@ -162,7 +191,6 @@ def showVideo():
 def main():
     currentHeight = 1.28
     steps = 5
-    position = np.float32([0,0]).reshape(-1,1,2)
     estimador = Estimador()
     capturador = Capturador()
     result = estimador.sceneMatching.templateImage
@@ -173,14 +201,18 @@ def main():
     # video = threading.Thread(target=showVideo, daemon=True)
     # video.start()
 
-    vision = threading.Thread(target=getPosition, args=(capturador, estimador, position, currentHeight, result,), daemon=True)
+    vision = threading.Thread(target=getPosition, args=(capturador, estimador, currentHeight, result,), daemon=True)
     vision.start()
 
-    navi = threading.Thread(target=mission, args=(drone, steps, position,))
-    navi.start()
+    # navi = threading.Thread(target=mission, args=(drone, steps,))
+    # navi.start()
+
+    testing = threading.Thread(target=test, args=(drone,))
+    testing.start()
 
     while(1):
-        cv2.imshow('Matching',result)
+        resultRotated = cv2.rotate(result, cv2.cv2.ROTATE_90_COUNTERCLOCKWISE) 
+        cv2.imshow('Navigation', resultRotated)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 

@@ -33,10 +33,10 @@ class Estimador:
 		cv2.destroyAllWindows()
 
 	def transformPoint(self, point):
-		print("point in image", point)
+		# print("point in image", point)
 		if point[0][0][0] == -1000 and point[0][0][1] == -1000:
 			return None
 		point[0][0][0], point[0][0][1] = point[0][0][1], point[0][0][0]
 		transformedPoint = cv2.perspectiveTransform(point, self.matrizTransformacao)
-		print('real point', transformedPoint)
+		# print('real point', transformedPoint)
 		return transformedPoint
